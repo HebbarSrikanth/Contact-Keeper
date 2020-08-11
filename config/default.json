@@ -1,0 +1,4 @@
+{
+    "mongoURL": "mongodb+srv://sa:cartCom@mycluster.32fmx.mongodb.net/test?retryWrites=true&w=majority",
+    "jwtSecret": "root@1404"
+}
