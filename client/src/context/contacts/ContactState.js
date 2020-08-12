@@ -1,19 +1,90 @@
 import React, { useReducer } from 'react'
 import ContactContext from './contactContext'
 import ContactReducer from './contactReducer'
-import { INSERT_USER } from '../types'
+import { v4 as uuid } from 'uuid'
+import type from '../types'
 
 const ContactState = (props) => {
 
     const initialState = {
-
+        contacts: [
+            {
+                id: 1,
+                name: 'Sheldon Cooper',
+                email: 'sc@gmail.com',
+                type: 'professional',
+                phone: '0123456789'
+            },
+            {
+                id: 2,
+                name: 'Leonard',
+                email: 'lc@gmail.com',
+                type: 'personal',
+                phone: '1023456789'
+            }
+        ],
+        currentUser: null
     }
 
     const [state, dispatch] = useReducer(ContactReducer, initialState)
 
+    //Add Contact
+    const addContact = (contactDetails) => {
+        contactDetails.id = uuid();
+        dispatch({
+            type: type.ADD_USER,
+            payload: contactDetails
+        })
+    }
+
+    //Edit Contact
+    const editContact = (contactDetails) => {
+        dispatch({
+            type: type.UPDATE_CONTACT,
+            payload: contactDetails
+        })
+    }
+
+
+    //Delete Contact
+    const deleteContact = id => {
+        dispatch({
+            type: type.DELETE_USER,
+            payload: id
+        })
+    }
+
+    //Set current contact
+
+    const setCurrentUser = contactDetails => {
+        dispatch({
+            type: type.SET_CURRENT,
+            payload: contactDetails
+        })
+    }
+
+
+    //Clear current contact
+    const delCurrentUser = () => {
+        dispatch({ type: type.CLEAR_CURRENT })
+    }
+
+    //Filter Contact
+
+
+    //Clear Filter
+
     return (
         <ContactContext.Provider
-            value={}
+            value={{
+                contacts: state.contacts,
+                curUser: state.currentUser,
+                addContact,
+                deleteContact,
+                setCurrentUser,
+                delCurrentUser,
+                editContact
+            }}
         >
             {props.children}
         </ContactContext.Provider>)
