@@ -9,6 +9,8 @@ const Navbar = ({ title, icon }) => {
             <div className="navbar bg-primary">
                 <h3><i className={icon} />{title}</h3>
                 <ul>
+                    <li><Link to='/register'>SignUp</Link></li>
+                    <li><Link to='/login'>Login</Link></li>
                     <li><Link to='/'>Home</Link></li>
                     <li><Link to='/about'>About</Link></li>
                 </ul>

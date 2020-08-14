@@ -27,8 +27,8 @@ const ContactItem = ({ contact }) => {
                 </span>
             </h3>
             <ul className="list">
-                {email && <li>{email}</li>}
-                {phone && <li>{phone}</li>}
+                {email && <li>Email : {email}</li>}
+                {phone && <li>Phone : {phone}</li>}
             </ul>
             <p>
                 <button className="btn btn-dark btn-sm" onClick={() => setCurrentUser(contact)}>Edit</button>

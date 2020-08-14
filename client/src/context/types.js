@@ -1,4 +1,5 @@
 const type = {
+    //Contact Related types
     ADD_USER: 'ADD_USER',
     DELETE_USER: 'DELETE_USER',
     SET_CURRENT: 'SET_CURRENT',
@@ -7,7 +8,20 @@ const type = {
     FILTER_CONTACT: 'FILTER_CONTACT',
     CLEAR_FILTER: 'CLEAR_FILTER',
     SET_ALERT: 'SET_ALERT',
-    REMOVE_ALERT: 'REMOVE_ALERT'
+    REMOVE_ALERT: 'REMOVE_ALERT',
+
+    //Auth Related types
+    REGISTER_SUCCESS: 'REGISTER_SUCCESS',
+    REGISTER_FAIL: 'REGISTER_FAIL',
+    USER_LOADED: 'USER_LOADED',
+    AUTH_ERROR: 'AUTH_ERROR',
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+    LOGIN_FAIL: 'LOGIN_FAIL',
+    LOGOUT: 'LOGOUT',
+    CLEAR_ERRORS: 'CLEAR_ERRORS',
+
+    //Alert types
+    CLEAR_ALERT: 'CLEAR_ALERT'
 }
 
 export default type
