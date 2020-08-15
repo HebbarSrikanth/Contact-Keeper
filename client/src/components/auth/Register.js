@@ -1,21 +1,27 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import AlertContext from '../../context/alert/alertContext'
+import AuthContext from '../../context/auth/authContext'
 
-const Register = () => {
+const Register = (props) => {
+    //Import AuthContext
+    const authContext = useContext(AuthContext)
+    const { register, error, clearErrors, isAuthenticated } = authContext
 
+    //Import Alert Context
     const alertContext = useContext(AlertContext)
-
     const { setAlert } = alertContext
 
+    //Declare Component Required State
     const [state, setState] = useState({
         name: '',
         email: '',
         password: '',
         passwordConfirm: ''
     })
-
+    //Destructre for simplified usage of state
     const { name, email, password, passwordConfirm } = state
 
+    //Handling on Change event when ever user enters in respective input forms
     const handleChange = e => {
         setState({
             ...state,
@@ -23,6 +29,7 @@ const Register = () => {
         })
     }
 
+    //Handling when clicked on submit
     const submitForm = e => {
         e.preventDefault()
         if (name === '' || email === '' || password === '') {
@@ -30,10 +37,27 @@ const Register = () => {
         } else if (password !== passwordConfirm) {
             setAlert(`Passwords doesn't match`, 'danger')
         } else {
-            console.log(state)
+            register({
+                name,
+                email,
+                password
+            })
+        }
+    }
+
+    //Whenever components gets loaded or when there is a change in error state run , 
+    useEffect(() => {
+
+        if (isAuthenticated) {
+            props.history.push('/')
         }
 
-    }
+        if (error !== null) {
+            setAlert('User already Exists', 'danger')
+            clearErrors();
+        }
+        // eslint-disable-next-line
+    }, [error, isAuthenticated, props.history])
 
     return (
         <div className='card form-container'>

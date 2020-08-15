@@ -27,7 +27,7 @@ route.get('/', authCheck, async (req, res) => {
 //@access       Private
 route.post('/', [authCheck, [
     //Define the validation condition
-    check('name', 'Name is required/Should have more than 3 characters').not().isEmpty().isLength({ min: 6 }),
+    check('name', 'Name is required/Should have more than 3 characters').not().isEmpty().isLength({ min: 3 }),
     check('phone', 'Phone number is required!!').not().isEmpty(),
     check('phone', 'Should contain only 10 digits').isLength({ min: 10, max: 10 })
 ]], async (req, res) => {
@@ -53,17 +53,52 @@ route.post('/', [authCheck, [
 //@desc         Update the contact details of the user 
 //@access       Private
 route.put('/:id', [authCheck, [
+    check('name', 'Name is required/Should have more than 3 characters').not().isEmpty().isLength({ min: 3 }),
+    check('phone', 'Phone number is required!!').not().isEmpty(),
+    check('phone', 'Should contain only 10 digits').isLength({ min: 10, max: 10 })
+]], async (req, res) => {
 
-]], (req, res) => {
+    const id = req.params.id;
 
+    const errors = validationResult(req)
+    //Check if there are errors, if any then send back the response
+    if (!errors.isEmpty()) return res.status(400).json({ error: errors.array() })
+
+    const { name, email, phone, type } = req.body;
+
+    try {
+        const contact = await Contact.findById({ _id: id })
+
+        contact.name = name
+        contact.email = email
+        contact.phone = phone
+        contact.type = type
+
+        await contact.save();
+
+        res.json(contact)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error!!')
+    }
 })
 
 
 //@route        POST api/contacts
 //@desc         Add new contact 
 //@access       Private
-route.delete('/:id', (req, res) => {
-    res.send(`Deleting the user`)
+route.delete('/:id', authCheck, async (req, res) => {
+
+    const id = req.params.id;
+
+    try {
+        const result = await Contact.deleteOne({ _id: id })
+        res.json(result)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send('Server Error!!')
+    }
+
 })
 
 

@@ -18,11 +18,12 @@ route.post('/', [
     check('email', 'Please enter the valid email id').isEmail(),
     check('password', 'Please enter the password').isLength({ min: 6 })
 ], async (req, res) => {
+
     const errors = validationResult(req)
 
     //Check if there are any error in the incoming data
     if (!errors.isEmpty()) {
-        return res.status(400).json({ erros: errors.array() })
+        return res.status(400).json({ errors: errors.array() })
     }
 
     const { name, email, password } = req.body;

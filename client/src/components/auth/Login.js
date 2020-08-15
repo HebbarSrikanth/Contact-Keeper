@@ -1,11 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import AlertContext from '../../context/alert/alertContext'
+import AuthContext from '../../context/auth/authContext'
 
-const Login = () => {
+const Login = (props) => {
+
+    const authContext = useContext(AuthContext)
+    const { login, isAuthenticated, error, clearErrors } = authContext
+
+    const alertContext = useContext(AlertContext)
+    const { setAlert } = alertContext
 
     const [state, setState] = useState({
         email: '',
         password: '',
     })
+
+    useEffect(() => {
+        if (isAuthenticated)
+            props.history.push('/')
+
+        if (error) {
+            setAlert(error, 'danger')
+            clearErrors();
+        }
+        //eslint-disable-next-line
+    }, [isAuthenticated, error, props.history])
 
     const { email, password } = state
 
@@ -18,7 +37,15 @@ const Login = () => {
 
     const submitForm = e => {
         e.preventDefault()
-        console.log(state)
+        if (email.trim().length > 0 && password.trim().length > 0) {
+            login({
+                email,
+                password
+            })
+        }
+        else {
+            setAlert('Email/Password is missing', 'danger')
+        }
     }
 
     return (
