@@ -1,10 +1,15 @@
 import React, { useState, useContext, useEffect } from 'react'
 import ContactContext from '../../context/contacts/contactContext';
+import AlertContext from '../../context/alert/alertContext';
 
 const ContactForm = () => {
 
-    const contactContext = useContext(ContactContext)
+    //Importing Alert Context incase of errors while saving the contacts
+    const alertcontext = useContext(AlertContext)
+    const { setAlert } = alertcontext;
 
+    //Importing Contact Context
+    const contactContext = useContext(ContactContext)
     const { addContact, curUser, delCurrentUser, editContact } = contactContext;
 
     const [state, setState] = useState({
@@ -26,11 +31,19 @@ const ContactForm = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        if (curUser === null) {
-            addContact(state);
-        }
+        //Checking for the validation while saving/updating contacts
+
+        if (name.length < 3)
+            setAlert('Name should have more than 3 characters', 'danger')
+        else if (phone.length < 10 || phone.length > 10)
+            setAlert('Invalid Phone number', 'danger')
         else {
-            editContact(state)
+            if (curUser === null) {
+                addContact(state);
+            }
+            else {
+                editContact(state)
+            }
         }
         clearAll()
     }
